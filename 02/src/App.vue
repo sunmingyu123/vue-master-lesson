@@ -22,7 +22,7 @@ export default {
     HelloWorld
   },
   async mounted () {
-    let data
+    // let data
     let ret = await this.$axios.get('/api/goods')
     console.log(ret.data)
 
