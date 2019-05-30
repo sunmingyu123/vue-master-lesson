@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import Vue from 'vue/dist/vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 
@@ -49,3 +49,11 @@ export default new Router({
 //     }
 //   }
 // });
+
+a.js
+a_123kjhks.js?hash 上线
+a_7haukjjk.js 上线
+上线的文件列表可以读到
+老的html     老的静态资源
+
+新的html     新的静态资源

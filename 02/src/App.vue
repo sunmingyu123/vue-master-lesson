@@ -1,16 +1,13 @@
 <template>
   <div id="app">
-    <Demo></Demo>
-    <img src="./assets/logo.png">
-    <div>
-      <p>
-        If Element is successfully added to this project, you'll see an
-        <code v-text="'<el-button>'"></code>
-        below
-      </p>
-      <el-button>el-button</el-button>
-    </div>
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+
+    <h1>
+      {{$store.name}}
+    </h1>
+   <div>冲啊，手榴弹扔了{{$store.state.count}}个</div>
+    <button @click="add">扔一个</button>
+    <button @click="addAsync">蓄力扔俩</button>
+
   </div>
 </template>
 
@@ -21,19 +18,30 @@ export default {
   components: {
     HelloWorld
   },
+  // async + await ES7
   async mounted () {
-    // let kaikeba
+    console.log(this.$store)
+    let kaikeba
     let name = 1
     console.log(name)
     // let data
     // let ret = await this.$axios.get('/api/goods')
-    // console.log(ret.data)
+    // console.lstoreog(ret.data)
 
     // let mock = await this.$axios.get('/easymock/course/list')
     // console.log(mock.data)
 
     let prod = await this.$axios.get('http://localhost:9082/api/goods')
     console.log(prod.data)
+  },
+      methods:{
+    add(){
+      // 提交申请单
+      this.$store.commit('increment')
+    },
+    addAsync(){
+      this.$store.dispatch('incrementAsync')
+    }
   }
 }
 </script>
