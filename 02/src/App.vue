@@ -1,8 +1,8 @@
 <template>
   <div id="app">
+    <Demo></Demo>
     <img src="./assets/logo.png">
     <div>
-      <Demo />
       <p>
         If Element is successfully added to this project, you'll see an
         <code v-text="'<el-button>'"></code>
@@ -22,12 +22,15 @@ export default {
     HelloWorld
   },
   async mounted () {
+    // let kaikeba
+    let name = 1
+    console.log(name)
     // let data
-    let ret = await this.$axios.get('/api/goods')
-    console.log(ret.data)
+    // let ret = await this.$axios.get('/api/goods')
+    // console.log(ret.data)
 
-    let mock = await this.$axios.get('/easymock/course/list')
-    console.log(mock.data)
+    // let mock = await this.$axios.get('/easymock/course/list')
+    // console.log(mock.data)
 
     let prod = await this.$axios.get('http://localhost:9082/api/goods')
     console.log(prod.data)

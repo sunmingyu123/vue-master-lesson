@@ -6,10 +6,12 @@ import './plugins/element.js'
 import axios from 'axios'
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
+
 Vue.component('Demo', {
   template: `
     <div>template</div>
   `,
+  // 会编译成render
   render: h => <div>render</div>
 })
 
