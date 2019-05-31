@@ -3,7 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+<<<<<<< HEAD
     "precommi1t": "npm run lint",
+=======
+    "precommit1": "npm run lint",
+>>>>>>> 9a10dd97b38a9f80ef39bd38bf1e2edbd05ceb86
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
