@@ -15,6 +15,7 @@ const idToTemplate = cached(id => {
 })
 
 const mount = Vue.prototype.$mount
+// 缓存一下$mount web层面，如果没有render 需要吧template解析为render
 Vue.prototype.$mount = function (
   el?: string | Element,
   hydrating?: boolean

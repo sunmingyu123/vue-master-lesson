@@ -110,7 +110,7 @@ export function createComponent (
   }
 
   const baseCtor = context.$options._base
-
+  // baseCtor 其实就是Vue
   // plain options object: turn it into a constructor
   if (isObject(Ctor)) {
     Ctor = baseCtor.extend(Ctor)
