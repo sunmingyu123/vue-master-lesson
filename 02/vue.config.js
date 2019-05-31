@@ -3,6 +3,7 @@ module.exports = {
     // 扩展webpack
     devServer: {
       before (app) {
+        // app就是一个express
         app.get('/api/goods', function (req, res) {
           res.json({
             list: [
@@ -14,6 +15,7 @@ module.exports = {
         })
       },
       proxy: {
+        // easymock开头的请求，webpack帮你转发到target之上
         '/easymock': {
           target: ' https://www.easy-mock.com/mock/5cd4f9e043a6e36a6cc8583b/kaikeba',
           changeOrigin: true,
