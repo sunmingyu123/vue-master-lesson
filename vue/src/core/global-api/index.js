@@ -46,6 +46,9 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   Vue.nextTick = nextTick
 
   Vue.options = Object.create(null)
+  // Vue.components
+  // Vue.filter
+  // Vue.directive
   ASSET_TYPES.forEach(type => {
     Vue.options[type + 's'] = Object.create(null)
   })
@@ -56,7 +59,9 @@ export function initGlobalAPI (Vue: GlobalAPI) {
 
   extend(Vue.options.components, builtInComponents)
   // 插件
-  initwse(Vue)
+
+  initUse(Vue)
+  // 合并
   initMixin(Vue)
   initExtend(Vue)
   initAssetRegisters(Vue)

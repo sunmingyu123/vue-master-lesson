@@ -13,6 +13,7 @@ import { extend, mergeOptions, formatComponentName } from '../util/index'
 let uid = 0
 
 export function initMixin (Vue: Class<Component>) {
+  // 这里定义_init
   Vue.prototype._init = function (options?: Object) {
     const vm: Component = this
     // a uid
@@ -20,11 +21,6 @@ export function initMixin (Vue: Class<Component>) {
 
     let startTag, endTag
     /* istanbul ignore if */
-    if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
-      startTag = `vue-perf-start:${vm._uid}`
-      endTag = `vue-perf-end:${vm._uid}`
-      mark(startTag)
-    }
 
     // a flag to avoid this being observed
     vm._isVue = true
@@ -52,28 +48,36 @@ export function initMixin (Vue: Class<Component>) {
     // 生命周期
     initLifecycle(vm)
     // 事件
+    // so easy
     initEvents(vm)
     // 渲染
+    // createElement
+    // slots
     initRender(vm)
     // 生命周期钩子
+    // 第一个生命周期
+    // data prop methods好像都还没有 
     callHook(vm, 'beforeCreate')
+    
     // injections
+    // inject
     initInjections(vm) // resolve injections before data/props
     // state
+    // !!!! data props computed methods !!!!!!!!!
+    
     initState(vm)
+    // provide\
     // provide
     initProvide(vm) // resolve provide after data/props
     // 生命周期
+    // 所以created生命周期的时候，可以获取provide，methods,computed,props
     callHook(vm, 'created')
-
-    /* istanbul ignore if */
-    if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
-      vm._name = formatComponentName(vm, false)
-      mark(endTag)
-      measure(`vue ${vm._name} init`, startTag, endTag)
-    }
+    // new Vue({
+    //   el:'#id'
+    // })
     // 如果new的时候有el ，就调用$mount ， 和咱们手动调用$mount是一个意思
     if (vm.$options.el) {
+      // ￥mount负责挂载
       vm.$mount(vm.$options.el)
     }
   }

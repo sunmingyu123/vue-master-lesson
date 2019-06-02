@@ -5,6 +5,12 @@ import { warn, hasSymbol } from '../util/index'
 import { defineReactive, toggleObserving } from '../observer/index'
 
 export function initProvide (vm: Component) {
+  // 挂载_provided
+  // provide(){
+  //   return this
+  // }
+  // option定义了provide
+  // 这里可以看到provide可以是函数，、也可以是变量
   const provide = vm.$options.provide
   if (provide) {
     vm._provided = typeof provide === 'function'
@@ -52,6 +58,7 @@ export function resolveInject (inject: any, vm: Component): ?Object {
       const provideKey = inject[key].from
       let source = vm
       while (source) {
+        // 查找_provide
         if (source._provided && hasOwn(source._provided, provideKey)) {
           result[key] = source._provided[provideKey]
           break

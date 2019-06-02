@@ -22,7 +22,7 @@ if (process.argv[2]) {
     return b.output.file.indexOf('weex') === -1
   })
 }
-
+// 构建入口
 build(builds)
 
 function build (builds) {

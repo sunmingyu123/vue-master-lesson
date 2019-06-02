@@ -16,6 +16,8 @@ export function initExtend (Vue: GlobalAPI) {
   /**
    * Class inheritance
    */
+  // Vue.extend 实现了继承
+
   Vue.extend = function (extendOptions: Object): Function {
     extendOptions = extendOptions || {}
     const Super = this
@@ -29,7 +31,7 @@ export function initExtend (Vue: GlobalAPI) {
     if (process.env.NODE_ENV !== 'production' && name) {
       validateComponentName(name)
     }
-
+    // 标准的继承
     const Sub = function VueComponent (options) {
       this._init(options)
     }

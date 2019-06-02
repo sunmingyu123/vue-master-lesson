@@ -15,13 +15,15 @@ const idToTemplate = cached(id => {
 })
 
 const mount = Vue.prototype.$mount
+// 缓存一下之前的$Mount 
+// web有compile 的入口喽
 // 缓存一下$mount web层面，如果没有render 需要吧template解析为render
 Vue.prototype.$mount = function (
   el?: string | Element,
   hydrating?: boolean
 ): Component {
   el = el && query(el)
-
+  // el不能是body和html
   /* istanbul ignore if */
   if (el === document.body || el === document.documentElement) {
     process.env.NODE_ENV !== 'production' && warn(
@@ -32,11 +34,14 @@ Vue.prototype.$mount = function (
 
   const options = this.$options
   // resolve template/el and convert to render function
+  // 没有render 就找template
+  // 所以render的优先级比templte高
   if (!options.render) {
     let template = options.template
     if (template) {
       if (typeof template === 'string') {
         if (template.charAt(0) === '#') {
+          // id
           template = idToTemplate(template)
           /* istanbul ignore if */
           if (process.env.NODE_ENV !== 'production' && !template) {
@@ -47,6 +52,7 @@ Vue.prototype.$mount = function (
           }
         }
       } else if (template.nodeType) {
+        // 是dom 拿到html内容
         template = template.innerHTML
       } else {
         if (process.env.NODE_ENV !== 'production') {
@@ -58,11 +64,26 @@ Vue.prototype.$mount = function (
       template = getOuterHTML(el)
     }
     if (template) {
+      获取到模板字符串了
+      `
+        <div>
+        {{name}}
+        </div> 
+      `
       /* istanbul ignore if */
       if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
         mark('compile')
       }
-
+      // 编译模板，返回render函数 
+      // new Vue({
+      //   template:`
+      //     <div id="app>{{name}}</div>
+      //   `
+      //   // 编译成
+      //   render: h=>{
+      //     return h('div',{attrs:{id:app}}, this.name)
+      //   }
+      // })
       const { render, staticRenderFns } = compileToFunctions(template, {
         shouldDecodeNewlines,
         shouldDecodeNewlinesForHref,
@@ -79,6 +100,7 @@ Vue.prototype.$mount = function (
       }
     }
   }
+  // 有render 直接mount
   return mount.call(this, el, hydrating)
 }
 
@@ -97,5 +119,5 @@ function getOuterHTML (el: Element): string {
 }
 
 Vue.compile = compileToFunctions
-
+// 真正的Vue 对外暴露的
 export default Vue

@@ -25,6 +25,9 @@ Dep.target = null
 
 
 
+// {{name}}
+
+// PP
 // 监听器
 class Watcher {
   constructor(vm, key, cb) {
@@ -67,6 +70,7 @@ class KVue {
     if(options.created){
       options.created.call(this)
     }
+    // 解析html
     this.$compile = new Compile(options.el, this)
   }
   observer(value) {
@@ -79,14 +83,18 @@ class KVue {
     })
   }
   defineReactive(obj, key, val) {
-
+    // 获取值触发get
+    // 修改值 出发set
+    // {{name}}
+    // k-text=name
+    // this.name = xx
     const dep = new Dep()
     Object.defineProperty(obj, key, {
       enumerable: true,
       configurable: true,
       get() {
         // 将Dep.target（即当前的Watcher对象存入Dep的deps中）
-
+        // 添加依赖
         Dep.target && dep.addDep(Dep.target)
         return val
       },

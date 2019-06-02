@@ -3,6 +3,7 @@
   "version": "2.5.18-beta.0",
   "description": "Reactive, component-oriented view layer for modern web interfaces.",
   "main": "dist/vue.runtime.common.js",
+  // import Vue from 'vue'
   "module": "dist/vue.runtime.esm.js",
   "unpkg": "dist/vue.js",
   "jsdelivr": "dist/vue.js",
@@ -23,6 +24,7 @@
     "dev:weex": "rollup -w -c scripts/config.js --environment TARGET:weex-framework",
     "dev:weex:factory": "rollup -w -c scripts/config.js --environment TARGET:weex-factory",
     "dev:weex:compiler": "rollup -w -c scripts/config.js --environment TARGET:weex-compiler ",
+    // 构建的入口
     "build": "node scripts/build.js",
     "build:ssr": "npm run build -- web-runtime-cjs,web-server-renderer",
     "build:weex": "npm run build -- weex",
