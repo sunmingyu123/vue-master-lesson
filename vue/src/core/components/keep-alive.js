@@ -81,6 +81,7 @@ export default {
   },
 
   render () {
+    // 获取默认插槽
     const slot = this.$slots.default
     const vnode: VNode = getFirstComponentChild(slot)
     const componentOptions: ?VNodeComponentOptions = vnode && vnode.componentOptions

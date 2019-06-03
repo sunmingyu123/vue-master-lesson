@@ -33,6 +33,7 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   // exposed util methods.
   // NOTE: these are not considered part of the public API - avoid relying on
   // them unless you are aware of the risk.
+  // 扩展
   Vue.util = {
     warn,
     extend,
@@ -45,6 +46,9 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   Vue.nextTick = nextTick
 
   Vue.options = Object.create(null)
+  // Vue.components
+  // Vue.filter
+  // Vue.directive
   ASSET_TYPES.forEach(type => {
     Vue.options[type + 's'] = Object.create(null)
   })
@@ -54,8 +58,10 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   Vue.options._base = Vue
 
   extend(Vue.options.components, builtInComponents)
+  // 插件
 
   initUse(Vue)
+  // 合并
   initMixin(Vue)
   initExtend(Vue)
   initAssetRegisters(Vue)

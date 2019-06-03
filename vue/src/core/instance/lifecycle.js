@@ -38,8 +38,10 @@ export function initLifecycle (vm: Component) {
     while (parent.$options.abstract && parent.$parent) {
       parent = parent.$parent
     }
+    
     parent.$children.push(vm)
   }
+  // 存储$parent和$children
 
   vm.$parent = parent
   vm.$root = parent ? parent.$root : vm
@@ -56,6 +58,8 @@ export function initLifecycle (vm: Component) {
 }
 
 export function lifecycleMixin (Vue: Class<Component>) {
+  // 更新 
+  // 初始化和更新 实际执行的都是这个_update
   Vue.prototype._update = function (vnode: VNode, hydrating?: boolean) {
     const vm: Component = this
     const prevEl = vm.$el
@@ -65,10 +69,12 @@ export function lifecycleMixin (Vue: Class<Component>) {
     // Vue.prototype.__patch__ is injected in entry points
     // based on the rendering backend used.
     if (!prevVnode) {
+      // 老的虚拟dom
       // initial render
       vm.$el = vm.__patch__(vm.$el, vnode, hydrating, false /* removeOnly */)
     } else {
       // updates
+      // 更新 要做虚拟dom 的diff
       vm.$el = vm.__patch__(prevVnode, vnode)
     }
     restoreActiveInstance()
@@ -86,14 +92,14 @@ export function lifecycleMixin (Vue: Class<Component>) {
     // updated hook is called by the scheduler to ensure that children are
     // updated in a parent's updated hook.
   }
-
+  // 强制更新
   Vue.prototype.$forceUpdate = function () {
     const vm: Component = this
     if (vm._watcher) {
       vm._watcher.update()
     }
   }
-
+  // 销毁
   Vue.prototype.$destroy = function () {
     const vm: Component = this
     if (vm._isBeingDestroyed) {
@@ -137,6 +143,7 @@ export function lifecycleMixin (Vue: Class<Component>) {
     }
   }
 }
+// $$Mount实际执行的函数
 
 export function mountComponent (
   vm: Component,
@@ -164,6 +171,7 @@ export function mountComponent (
       }
     }
   }
+  // beforeMount
   callHook(vm, 'beforeMount')
 
   let updateComponent
@@ -186,14 +194,19 @@ export function mountComponent (
       measure(`vue ${name} patch`, startTag, endTag)
     }
   } else {
+    // _render 初始化我们的虚拟dom
+    // _update  修改虚拟dom
     updateComponent = () => {
-      vm._update(vm._render(), hydrating)
+      vm._update
+      (vm._render(), hydrating)
     }
   }
 
   // we set this to vm._watcher inside the watcher's constructor
   // since the watcher's initial patch may call $forceUpdate (e.g. inside child
   // component's mounted hook), which relies on vm._watcher being already defined
+  // 监听器
+  // 数据有更新，执行beforeUpdate
   new Watcher(vm, updateComponent, noop, {
     before () {
       if (vm._isMounted) {
@@ -207,6 +220,7 @@ export function mountComponent (
   // mounted is called for render-created child components in its inserted hook
   if (vm.$vnode == null) {
     vm._isMounted = true
+    // mounted
     callHook(vm, 'mounted')
   }
   return vm
@@ -321,7 +335,14 @@ export function deactivateChildComponent (vm: Component, direct?: boolean) {
 
 export function callHook (vm: Component, hook: string) {
   // #7573 disable dep collection when invoking lifecycle hooks
-  pushTarget()
+  // pushTarget()
+  // vm.$options['beforeCreate']
+  // 由于内部可以通过mixin扩展这些生命周期，所以都处理成数组了
+  // new Vue({
+  //   beforeCreate(){
+  //     this
+  //   }
+  // })
   const handlers = vm.$options[hook]
   if (handlers) {
     for (let i = 0, j = handlers.length; i < j; i++) {

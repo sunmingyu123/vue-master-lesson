@@ -50,9 +50,16 @@ export function initState (vm: Component) {
   const opts = vm.$options
   if (opts.props) initProps(vm, opts.props)
   if (opts.methods) initMethods(vm, opts.methods)
+  initDta 
+  // new Vue({
+  //   data(){
+  //     return :xx
+  //   }
+  // })
   if (opts.data) {
     initData(vm)
   } else {
+    // 没给data，就定义一个{}
     observe(vm._data = {}, true /* asRootData */)
   }
   if (opts.computed) initComputed(vm, opts.computed)
@@ -110,6 +117,7 @@ function initProps (vm: Component, propsOptions: Object) {
 }
 
 function initData (vm: Component) {
+  // Object.defineProperty
   let data = vm.$options.data
   data = vm._data = typeof data === 'function'
     ? getData(data, vm)
@@ -261,6 +269,17 @@ function createGetterInvoker(fn) {
 
 function initMethods (vm: Component, methods: Object) {
   const props = vm.$options.props
+  // props methods  data不能重复
+  new Vue({
+    methods:{
+      yy(){
+
+      }
+      xx(){
+        this.yy
+      }
+    }
+  })
   for (const key in methods) {
     if (process.env.NODE_ENV !== 'production') {
       if (typeof methods[key] !== 'function') {
@@ -283,6 +302,9 @@ function initMethods (vm: Component, methods: Object) {
         )
       }
     }
+    // this.yy  
+    // this.yy = this.yy.bind(methos[yy])
+    // noop空函数
     vm[key] = typeof methods[key] !== 'function' ? noop : bind(methods[key], vm)
   }
 }
@@ -324,18 +346,7 @@ export function stateMixin (Vue: Class<Component>) {
   dataDef.get = function () { return this._data }
   const propsDef = {}
   propsDef.get = function () { return this._props }
-  if (process.env.NODE_ENV !== 'production') {
-    dataDef.set = function () {
-      warn(
-        'Avoid replacing instance root $data. ' +
-        'Use nested data properties instead.',
-        this
-      )
-    }
-    propsDef.set = function () {
-      warn(`$props is readonly.`, this)
-    }
-  }
+
   Object.defineProperty(Vue.prototype, '$data', dataDef)
   Object.defineProperty(Vue.prototype, '$props', propsDef)
 

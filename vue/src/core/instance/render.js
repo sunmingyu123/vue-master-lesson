@@ -21,7 +21,9 @@ export function initRender (vm: Component) {
   const options = vm.$options
   const parentVnode = vm.$vnode = options._parentVnode // the placeholder node in parent tree
   const renderContext = parentVnode && parentVnode.context
+  // slots 后面this.$slot
   vm.$slots = resolveSlots(options._renderChildren, renderContext)
+  // 作用域插槽
   vm.$scopedSlots = emptyObject
   // bind the createElement fn to this instance
   // so that we get proper render context inside it.
@@ -31,7 +33,8 @@ export function initRender (vm: Component) {
   // normalization is always applied for the public version, used in
   // user-written render functions.
   vm.$createElement = (a, b, c, d) => createElement(vm, a, b, c, d, true)
-
+  // 创建虚拟dom的入口
+  // 你写的template，表面是html，其实实质行了createElement这个函数
   // $attrs & $listeners are exposed for easier HOC creation.
   // they need to be reactive so that HOCs using them are always updated
   const parentData = parentVnode && parentVnode.data
@@ -45,6 +48,7 @@ export function initRender (vm: Component) {
       !isUpdatingChildComponent && warn(`$listeners is readonly.`, vm)
     }, true)
   } else {
+    // 2.4新增的API， 也是用来做组件通信的  先略过
     defineReactive(vm, '$attrs', parentData && parentData.attrs || emptyObject, null, true)
     defineReactive(vm, '$listeners', options._parentListeners || emptyObject, null, true)
   }
@@ -57,7 +61,21 @@ export function renderMixin (Vue: Class<Component>) {
   Vue.prototype.$nextTick = function (fn: Function) {
     return nextTick(fn, this)
   }
-
+  // 初始化
+  // // 所以虚拟dom 就是用js的对象，去描述真实的dom
+  // {
+  //   type:'div',
+  //   attrs:{
+  //     id:"app"
+  //   }
+  //   slot
+  //   key
+  //   children:[xxm,123，{
+  //     type:'p',
+  //   }]
+  // }
+  // 上面这个对象，到真实dom渲染过程
+// _render返回的就是虚拟dom
   Vue.prototype._render = function (): VNode {
     const vm: Component = this
     const { render, _parentVnode } = vm.$options
@@ -72,6 +90,9 @@ export function renderMixin (Vue: Class<Component>) {
     // render self
     let vnode
     try {
+      // render(h){
+      //   这个h就是vm.$createElement
+      // }
       vnode = render.call(vm._renderProxy, vm.$createElement)
     } catch (e) {
       handleError(e, vm, `render`)

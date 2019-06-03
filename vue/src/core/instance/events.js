@@ -10,7 +10,9 @@ import {
 import { updateListeners } from '../vdom/helpers/index'
 
 export function initEvents (vm: Component) {
-  vm._events = Object.create(null)
+  // vm._events = {}
+
+  vm._events = Object.create(null) // 没有原型链上的乱遭的方法
   vm._hasHookEvent = false
   // init parent attached events
   const listeners = vm.$options._parentListeners
@@ -48,9 +50,12 @@ export function updateComponentListeners (
   updateListeners(listeners, oldListeners || {}, add, remove, createOnceHandler, vm)
   target = undefined
 }
-
+// flow.js的语法
+// let name:String = 'kaikeba'
 export function eventsMixin (Vue: Class<Component>) {
   const hookRE = /^hook:/
+  // 内部调用的 都是hook:
+  $On支持传递一个数组
   Vue.prototype.$on = function (event: string | Array<string>, fn: Function): Component {
     const vm: Component = this
     if (Array.isArray(event)) {
@@ -58,6 +63,10 @@ export function eventsMixin (Vue: Class<Component>) {
         vm.$on(event[i], fn)
       }
     } else {
+      class Bus{
+
+      }
+      // 当前的viewModel，的_events下面
       (vm._events[event] || (vm._events[event] = [])).push(fn)
       // optimize hook:event cost by using a boolean flag marked at registration
       // instead of a hash lookup
@@ -119,18 +128,7 @@ export function eventsMixin (Vue: Class<Component>) {
 
   Vue.prototype.$emit = function (event: string): Component {
     const vm: Component = this
-    if (process.env.NODE_ENV !== 'production') {
-      const lowerCaseEvent = event.toLowerCase()
-      if (lowerCaseEvent !== event && vm._events[lowerCaseEvent]) {
-        tip(
-          `Event "${lowerCaseEvent}" is emitted in component ` +
-          `${formatComponentName(vm)} but the handler is registered for "${event}". ` +
-          `Note that HTML attributes are case-insensitive and you cannot use ` +
-          `v-on to listen to camelCase events when using in-DOM templates. ` +
-          `You should probably use "${hyphenate(event)}" instead of "${event}".`
-        )
-      }
-    }
+    // 从_events找到数组，遍历执行
     let cbs = vm._events[event]
     if (cbs) {
       cbs = cbs.length > 1 ? toArray(cbs) : cbs
@@ -144,5 +142,6 @@ export function eventsMixin (Vue: Class<Component>) {
       }
     }
     return vm
+    
   }
 }

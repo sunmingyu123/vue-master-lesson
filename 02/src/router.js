@@ -50,10 +50,10 @@ export default new Router({
 //   }
 // });
 
-a.js
-a_123kjhks.js?hash 上线
-a_7haukjjk.js 上线
-上线的文件列表可以读到
-老的html     老的静态资源
+// a.js
+// a_123kjhks.js?hash 上线
+// a_7haukjjk.js 上线
+// 上线的文件列表可以读到
+// 老的html     老的静态资源
 
-新的html     新的静态资源
+// 新的html     新的静态资源

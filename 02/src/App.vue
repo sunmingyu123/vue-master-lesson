@@ -34,12 +34,12 @@ export default {
     let prod = await this.$axios.get('http://localhost:9082/api/goods')
     console.log(prod.data)
   },
-      methods:{
-    add(){
+  methods: {
+    add () {
       // 提交申请单
       this.$store.commit('increment')
     },
-    addAsync(){
+    addAsync () {
       this.$store.dispatch('incrementAsync')
     }
   }

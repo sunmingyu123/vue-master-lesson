@@ -34,7 +34,7 @@
             this.$on('validate',this.validate)
         },
         methods: {
-            validate() {
+            validate(cb=()=>{}) {
 
                 // 执行具体校验工作
                 // 1.获取校验规则
@@ -56,6 +56,8 @@
                     } else {
                         this.error = ''
                     }
+                    
+                     cb(this.error)
                 })
             }
         },

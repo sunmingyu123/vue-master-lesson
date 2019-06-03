@@ -62,6 +62,7 @@ export class Observer {
    * value type is Object.
    */
   walk (obj: Object) {
+    // {a:1,b:2}
     const keys = Object.keys(obj)
     for (let i = 0; i < keys.length; i++) {
       defineReactive(obj, keys[i])
@@ -154,12 +155,14 @@ export function defineReactive (
   }
 
   let childOb = !shallow && observe(val)
+  // 响应式的原理
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
     get: function reactiveGetter () {
       const value = getter ? getter.call(obj) : val
       if (Dep.target) {
+        // 收集依赖 获取
         dep.depend()
         if (childOb) {
           childOb.dep.depend()
@@ -188,6 +191,7 @@ export function defineReactive (
         val = newVal
       }
       childOb = !shallow && observe(newVal)
+      // 通知外面修改dom
       dep.notify()
     }
   })
